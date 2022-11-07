@@ -1,0 +1,15 @@
+{
+  "baseBranch": "origin/main",
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "cdk.out/**", "__generated__/**"]
+    },
+    "dev": { "cache": false },
+    "deploy": {
+      "dependsOn": ["build", "^deploy"],
+      "cache": false
+    }
+  }
+}

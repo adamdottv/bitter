@@ -1,0 +1,28 @@
+{
+  "name": "bitter",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "16",
+    "concurrently": "^7.5.0",
+    "esbuild": "^0.15.13",
+    "prettier": "latest",
+    "turbo": "latest",
+    "watch": "^1.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@7.5.0",
+  "prettier": {
+    "semi": false
+  }
+}

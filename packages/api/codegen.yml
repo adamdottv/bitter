@@ -1,0 +1,29 @@
+schema:
+  - "**/*.graphqls"
+  - "lib/schema/appsync.graphql"
+overwrite: true
+
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+
+config:
+  maybeValue: "T | null | undefined"
+  scalars:
+    AWSJSON: string
+    AWSDate: string
+    AWSTime: string
+    AWSDateTime: string
+    AWSTimestamp: number
+    AWSEmail: string
+    AWSURL: string
+    AWSPhone: string
+    AWSIPAddress: string
+
+generates:
+  __generated__/schema.graphql:
+    plugins:
+      - schema-ast
+  __generated__/index.ts:
+    plugins:
+      - typescript
