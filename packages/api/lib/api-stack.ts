@@ -39,7 +39,11 @@ import {
   AttributeType,
   StreamViewType,
 } from "aws-cdk-lib/aws-dynamodb"
-import { ServicePrincipal } from "aws-cdk-lib/aws-iam"
+import {
+  ServicePrincipal,
+  PolicyDocument,
+  PolicyStatement,
+} from "aws-cdk-lib/aws-iam"
 import { IHostedZone, HostedZone, CfnRecordSet } from "aws-cdk-lib/aws-route53"
 import { ISecret, Secret } from "aws-cdk-lib/aws-secretsmanager"
 import * as glob from "fast-glob"
@@ -119,6 +123,16 @@ export class ApiStack extends Stack {
       provider, // reference into the OIDC provider
       owner: "adamelmore", // your repository owner (organization or user) name
       repo: "bitter", // your repository name (without the owner name)
+      inlinePolicies: {
+        CdkAssumeRole: new PolicyDocument({
+          statements: [
+            new PolicyStatement({
+              actions: ["sts:AssumeRole"],
+              resources: ["arn:aws:iam::*:role/cdk-*"],
+            }),
+          ],
+        }),
+      },
     })
 
     new CfnOutput(this, "GithubActionsRoleArn", {
