@@ -10,13 +10,7 @@ import {
   IAppsyncFunction,
   Resolver,
 } from "@aws-cdk/aws-appsync-alpha"
-import {
-  CfnOutput,
-  Duration,
-  Stack,
-  StackProps,
-  PhysicalName,
-} from "aws-cdk-lib"
+import { CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib"
 import {
   EndpointType,
   RestApi,
@@ -233,12 +227,7 @@ export class ApiStack extends Stack {
         format: OutputFormat.ESM,
         tsconfig: "lib/functions/tsconfig.json",
         target: "node14.8",
-        nodeModules: [
-          "@aws-sdk/client-secrets-manager",
-          "@aws-sdk/client-dynamodb",
-          "@aws-sdk/lib-dynamodb",
-          "next-auth",
-        ],
+        nodeModules: ["@aws-sdk/client-secrets-manager", "jsonwebtoken"],
       },
     })
 

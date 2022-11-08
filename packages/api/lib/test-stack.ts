@@ -38,7 +38,10 @@ export class TestStack extends Stack {
           "@aws-sdk/client-dynamodb",
           "@aws-sdk/lib-dynamodb",
           "@aws-sdk/util-dynamodb",
-          "@faker-js/faker",
+          "ulid",
+          "chance",
+          "node-fetch",
+          "jsonwebtoken",
         ],
       },
       initialPolicy: [
