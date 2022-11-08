@@ -1,0 +1,62 @@
+interface IBeet {
+  id: ID!
+  profile: IProfile
+  createdAt: AWSDateTime!
+}
+
+type Beet implements IBeet {
+  id: ID!
+  profile: IProfile
+  createdAt: AWSDateTime!
+  text: String!
+  replies: Int!
+  likes: Int!
+  rebeets: Int!
+  liked: Boolean!
+  rebeeted: Boolean!
+}
+
+type Reply implements IBeet {
+  id: ID!
+  profile: IProfile
+  createdAt: AWSDateTime!
+  inReplyToBeet: IBeet!
+  inReplyToUsers: [IProfile!]
+  text: String!
+  replies: Int!
+  likes: Int!
+  rebeets: Int!
+  liked: Boolean!
+  rebeeted: Boolean!
+}
+
+type Rebeet implements IBeet {
+  id: ID!
+  profile: IProfile
+  createdAt: AWSDateTime!
+  rebeetOf: IBeet!
+}
+
+type BeetsPage {
+  beets: [IBeet!]
+  nextToken: String
+}
+
+type UnhydratedBeetsPage {
+  beets: [IBeet!]
+  nextToken: String
+}
+
+type Query {
+  getBeets(userId: ID!, limit: Int!, nextToken: String): BeetsPage!
+  getLikes(userId: ID!, limit: Int!, nextToken: String): UnhydratedBeetsPage!
+}
+
+type Mutation {
+  beet(text: String!): Beet!
+  like(beetId: ID!): Boolean!
+  unlike(beetId: ID!): Boolean!
+  rebeet(beetId: ID!): Rebeet!
+  unrebeet(beetId: ID!): Boolean!
+  reply(beetId: ID!, text: String!): Reply!
+}

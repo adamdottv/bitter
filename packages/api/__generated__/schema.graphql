@@ -1,0 +1,149 @@
+scalar AWSDate
+
+scalar AWSDateTime
+
+scalar AWSEmail
+
+scalar AWSIPAddress
+
+scalar AWSJSON
+
+scalar AWSPhone
+
+scalar AWSTime
+
+scalar AWSTimestamp
+
+scalar AWSURL
+
+type Beet implements IBeet {
+  createdAt: AWSDateTime!
+  id: ID!
+  liked: Boolean!
+  likes: Int!
+  profile: IProfile
+  rebeeted: Boolean!
+  rebeets: Int!
+  replies: Int!
+  text: String!
+}
+
+type BeetsPage {
+  beets: [IBeet!]
+  nextToken: String
+}
+
+interface IBeet {
+  createdAt: AWSDateTime!
+  id: ID!
+  profile: IProfile
+}
+
+interface IProfile {
+  backgroundImageUrl: AWSURL
+  beets: BeetsPage!
+  beetsCount: Int!
+  bio: String
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  followerCount: Int!
+  followingCount: Int!
+  handle: String!
+  id: ID!
+  imageUrl: AWSURL
+  location: String
+  name: String!
+  website: AWSURL
+}
+
+type Mutation {
+  beet(text: String!): Beet!
+  follow(userId: ID!): Boolean!
+  like(beetId: ID!): Boolean!
+  rebeet(beetId: ID!): Rebeet!
+  reply(beetId: ID!, text: String!): Reply!
+  unfollow(userId: ID!): Boolean!
+  unlike(beetId: ID!): Boolean!
+  unrebeet(beetId: ID!): Boolean!
+}
+
+type MyProfile implements IProfile {
+  backgroundImageUrl: AWSURL
+  beets: BeetsPage!
+  beetsCount: Int!
+  bio: String
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  followerCount: Int!
+  followingCount: Int!
+  handle: String!
+  id: ID!
+  imageUrl: AWSURL
+  location: String
+  name: String!
+  website: AWSURL
+}
+
+type OtherProfile implements IProfile {
+  backgroundImageUrl: AWSURL
+  beets: BeetsPage!
+  beetsCount: Int!
+  bio: String
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  followedBy: Boolean!
+  followerCount: Int!
+  following: Boolean!
+  followingCount: Int!
+  handle: String!
+  id: ID!
+  imageUrl: AWSURL
+  location: String
+  name: String!
+  website: AWSURL
+}
+
+input ProfileInput {
+  backgroundImageUrl: AWSURL
+  bio: String
+  birthdate: AWSDate
+  handle: String!
+  id: ID!
+  imageUrl: AWSURL
+  location: String
+  name: String!
+  website: AWSURL
+}
+
+type Query {
+  getBeets(limit: Int!, nextToken: String, userId: ID!): BeetsPage!
+  getLikes(limit: Int!, nextToken: String, userId: ID!): UnhydratedBeetsPage!
+  getMyProfile: MyProfile!
+  getProfile(handle: String!): OtherProfile
+}
+
+type Rebeet implements IBeet {
+  createdAt: AWSDateTime!
+  id: ID!
+  profile: IProfile
+  rebeetOf: IBeet!
+}
+
+type Reply implements IBeet {
+  createdAt: AWSDateTime!
+  id: ID!
+  inReplyToBeet: IBeet!
+  inReplyToUsers: [IProfile!]
+  liked: Boolean!
+  likes: Int!
+  profile: IProfile
+  rebeeted: Boolean!
+  rebeets: Int!
+  replies: Int!
+  text: String!
+}
+
+type UnhydratedBeetsPage {
+  beets: [IBeet!]
+  nextToken: String
+}

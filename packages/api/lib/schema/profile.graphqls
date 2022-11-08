@@ -1,0 +1,74 @@
+input ProfileInput {
+  id: ID!
+  name: String!
+  handle: String!
+  imageUrl: AWSURL
+  backgroundImageUrl: AWSURL
+  bio: String
+  location: String
+  website: AWSURL
+  birthdate: AWSDate
+}
+
+interface IProfile {
+  id: ID!
+  name: String!
+  handle: String!
+  imageUrl: AWSURL
+  backgroundImageUrl: AWSURL
+  bio: String
+  location: String
+  website: AWSURL
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  beets: BeetsPage!
+  followerCount: Int!
+  followingCount: Int!
+  beetsCount: Int!
+}
+
+type MyProfile implements IProfile {
+  id: ID!
+  name: String!
+  handle: String!
+  imageUrl: AWSURL
+  backgroundImageUrl: AWSURL
+  bio: String
+  location: String
+  website: AWSURL
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  beets: BeetsPage!
+  followerCount: Int!
+  followingCount: Int!
+  beetsCount: Int!
+}
+
+type OtherProfile implements IProfile {
+  id: ID!
+  name: String!
+  handle: String!
+  imageUrl: AWSURL
+  backgroundImageUrl: AWSURL
+  bio: String
+  location: String
+  website: AWSURL
+  birthdate: AWSDate
+  createdAt: AWSDateTime!
+  beets: BeetsPage!
+  followerCount: Int!
+  followingCount: Int!
+  beetsCount: Int!
+  following: Boolean!
+  followedBy: Boolean!
+}
+
+type Query {
+  getMyProfile: MyProfile!
+  getProfile(handle: String!): OtherProfile
+}
+
+type Mutation {
+  follow(userId: ID!): Boolean!
+  unfollow(userId: ID!): Boolean!
+}

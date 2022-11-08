@@ -10,7 +10,13 @@ import {
   IAppsyncFunction,
   Resolver,
 } from "@aws-cdk/aws-appsync-alpha"
-import { CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib"
+import {
+  CfnOutput,
+  Duration,
+  Stack,
+  StackProps,
+  PhysicalName,
+} from "aws-cdk-lib"
 import {
   EndpointType,
   RestApi,
@@ -75,25 +81,9 @@ export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props)
 
-    const {
-      prod,
-      main,
-      hostedZoneName,
-      hostedZoneId,
-      certificateArn,
-      secretArn,
-    } = props
+    const { prod, main, hostedZoneName, hostedZoneId, certificateArn } = props
 
-    if (!secretArn) {
-      this.authSecret = new Secret(this, "AuthSecret")
-    } else {
-      this.authSecret = Secret.fromSecretPartialArn(
-        this,
-        "AuthSecret",
-        secretArn
-      )
-    }
-
+    this.authSecret = Secret.fromSecretNameV2(this, "AuthSecret", "bitter")
     this.table = this.createTable(props)
     this.api = this.createApi(this.table)
 
@@ -123,15 +113,15 @@ export class ApiStack extends Stack {
 
     let provider: IGithubActionsIdentityProvider | undefined = undefined
     if (prod && main) {
-      provider = new GithubActionsIdentityProvider(scope, "GithubProvider")
+      provider = new GithubActionsIdentityProvider(this, "GithubProvider")
     } else {
       provider = GithubActionsIdentityProvider.fromAccount(
-        scope,
+        this,
         "GithubProvider"
       )
     }
 
-    const actionsRole = new GithubActionsRole(scope, "GithubActionsRole", {
+    const actionsRole = new GithubActionsRole(this, "GithubActionsRole", {
       provider, // reference into the OIDC provider
       owner: "adamelmore", // your repository owner (organization or user) name
       repo: "bitter", // your repository name (without the owner name)
@@ -231,7 +221,7 @@ export class ApiStack extends Stack {
   createApi(table: ITable): GraphqlApi {
     const appsyncAuthorizer = new NodejsFunction(this, "AppsyncAuthorizer", {
       description: "AppSync custom authorizer",
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_14_X,
       architecture: Architecture.ARM_64,
       entry: "lib/functions/appsync-authorizer.ts",
       timeout: Duration.seconds(10),
@@ -242,7 +232,7 @@ export class ApiStack extends Stack {
       bundling: {
         format: OutputFormat.ESM,
         tsconfig: "lib/functions/tsconfig.json",
-        /* target: "node14.8", */
+        target: "node14.8",
         nodeModules: [
           "@aws-sdk/client-secrets-manager",
           "@aws-sdk/client-dynamodb",
@@ -255,7 +245,7 @@ export class ApiStack extends Stack {
     table.grantReadData(appsyncAuthorizer)
     this.authSecret.grantRead(appsyncAuthorizer)
 
-    appsyncAuthorizer.addPermission("appsync", {
+    appsyncAuthorizer.addPermission("AppSync InvokeFunction Permission", {
       principal: new ServicePrincipal("appsync.amazonaws.com"),
       action: "lambda:InvokeFunction",
     })

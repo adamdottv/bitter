@@ -1,0 +1,42 @@
+{
+  "ApiStack": {
+    "ApiRegion": "us-east-1",
+    "TableName": "bitter-table",
+    "RegionalGraphqlApiUrl": "https://wngf5ygeynhsza6ge73t2n7jke.appsync-api.us-east-1.amazonaws.com/graphql",
+    "GraphqlApiUrl": "https://api.bitter.fyi/graphql",
+    "ApiProxyEndpointDC7170F6": "https://0vfsy0a5na.execute-api.us-east-1.amazonaws.com/prod/",
+    "GithubActionsRoleArn": "arn:aws:iam::119712928745:role/ApiStack-GithubActionsRoleF5CC769F-FQM6LDBTLH5W"
+  },
+  "ApiStack-ap-south-1": {
+    "ApiRegion": "ap-south-1",
+    "TableName": "bitter-table",
+    "RegionalGraphqlApiUrl": "https://puaxe2szzzdmlf74wmm7ymoiui.appsync-api.ap-south-1.amazonaws.com/graphql",
+    "GraphqlApiUrl": "https://api.bitter.fyi/graphql",
+    "ApiProxyEndpointDC7170F6": "https://0g8onh3ob9.execute-api.ap-south-1.amazonaws.com/prod/",
+    "GithubActionsRoleArn": "arn:aws:iam::119712928745:role/ApiStack-ap-south-1-GithubActionsRoleF5CC769F-ZXUH2S6GXAOA"
+  },
+  "ApiStack-ap-southeast-2": {
+    "ApiRegion": "ap-southeast-2",
+    "TableName": "bitter-table",
+    "RegionalGraphqlApiUrl": "https://wk6m27gojzda5ixyepry5xxtqm.appsync-api.ap-southeast-2.amazonaws.com/graphql",
+    "GraphqlApiUrl": "https://api.bitter.fyi/graphql",
+    "ApiProxyEndpointDC7170F6": "https://hw9ea8uxpi.execute-api.ap-southeast-2.amazonaws.com/prod/",
+    "GithubActionsRoleArn": "arn:aws:iam::119712928745:role/ApiStack-ap-southeast-2-GithubActionsRoleF5CC769F-H7KGB8UPGVYW"
+  },
+  "ApiStack-eu-central-1": {
+    "ApiRegion": "eu-central-1",
+    "TableName": "bitter-table",
+    "RegionalGraphqlApiUrl": "https://v3b6sxsharhubcy25pq2etj45a.appsync-api.eu-central-1.amazonaws.com/graphql",
+    "GraphqlApiUrl": "https://api.bitter.fyi/graphql",
+    "ApiProxyEndpointDC7170F6": "https://ggplu9lkhf.execute-api.eu-central-1.amazonaws.com/prod/",
+    "GithubActionsRoleArn": "arn:aws:iam::119712928745:role/ApiStack-eu-central-1-GithubActionsRoleF5CC769F-1M8HI3QMK56X6"
+  },
+  "ApiStack-us-west-2": {
+    "ApiRegion": "us-west-2",
+    "TableName": "bitter-table",
+    "RegionalGraphqlApiUrl": "https://kxbji5eahfdtncqjkr2lyaevmq.appsync-api.us-west-2.amazonaws.com/graphql",
+    "GraphqlApiUrl": "https://api.bitter.fyi/graphql",
+    "ApiProxyEndpointDC7170F6": "https://kkasa9797c.execute-api.us-west-2.amazonaws.com/prod/",
+    "GithubActionsRoleArn": "arn:aws:iam::119712928745:role/ApiStack-us-west-2-GithubActionsRoleF5CC769F-1PVGQEX805USQ"
+  }
+}
