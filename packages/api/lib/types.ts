@@ -1,4 +1,4 @@
-export type ItemType = "USER" | "USERNAME"
+export type ItemType = "PROFILE" | "HANDLE"
 
 export interface DatabaseItem {
   pk: string

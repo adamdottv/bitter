@@ -1,0 +1,61 @@
+#set($sub = $ctx.identity.resolverContext.sub)
+#set($other = $ctx.args.userId)
+#set($profile = "PROFILE#$sub")
+
+{
+  "version": "2018-05-29",
+  "operation": "TransactWriteItems",
+  "transactItems": [
+    {
+      "table": "[[TABLE_NAME]]",
+      "operation": "PutItem",
+      "key": {
+        "pk": $util.dynamodb.toDynamoDBJson($profile),
+        "sk": $util.dynamodb.toDynamoDBJson("FOLLOW#$other")
+      },
+      "attributeValues": {
+        "type": $util.dynamodb.toDynamoDBJson("FOLLOW"),
+        "userId": $util.dynamodb.toDynamoDBJson($sub),
+        "otherUserId": $util.dynamodb.toDynamoDBJson($other),
+        "createdAt": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())
+      },
+      "condition": {
+        "expression": "attribute_not_exists(sk)"
+      }
+    },
+    {
+      "table":"[[TABLE_NAME]]",
+      "operation": "UpdateItem",
+      "key": {
+        "pk": $util.dynamodb.toDynamoDBJson($profile),
+        "sk": $util.dynamodb.toDynamoDBJson($profile)
+      },
+      "update": {
+        "expression": "ADD followingCount :one",
+        "expressionValues": {
+          ":one": $util.dynamodb.toDynamoDBJson(1)
+        }
+      },
+      "condition": {
+        "expression": "attribute_exists(pk)"
+      }
+    },
+    {
+      "table":"[[TABLE_NAME]]",
+      "operation": "UpdateItem",
+      "key": {
+        "pk": $util.dynamodb.toDynamoDBJson("PROFILE#$other"),
+        "sk": $util.dynamodb.toDynamoDBJson("PROFILE#$other")
+      },
+      "update": {
+        "expression": "ADD followersCount :one",
+        "expressionValues": {
+          ":one": $util.dynamodb.toDynamoDBJson(1)
+        }
+      },
+      "condition": {
+        "expression": "attribute_exists(pk)"
+      }
+    }
+  ]
+}

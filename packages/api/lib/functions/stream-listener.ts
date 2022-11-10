@@ -21,7 +21,7 @@ export const handler: DynamoDBStreamHandler = async (event): Promise<void> => {
     const item = (newItem ?? oldItem) as DatabaseItem
 
     switch (item.type) {
-      case "USER":
+      case "PROFILE":
         /* if (record.eventName === "INSERT") */
         /*   await handleUserAdded(analytics, item as DatabaseUser) */
         /* if (record.eventName === "MODIFY") */

@@ -57,7 +57,7 @@ interface IProfile {
 }
 
 type Mutation {
-  beet(text: String!): Beet!
+  beet(text: String!): Boolean!
   follow(userId: ID!): Boolean!
   like(beetId: ID!): Boolean!
   rebeet(beetId: ID!): Rebeet!

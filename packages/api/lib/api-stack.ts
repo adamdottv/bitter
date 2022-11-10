@@ -52,6 +52,7 @@ import {
   GithubActionsRole,
   IGithubActionsIdentityProvider,
 } from "aws-cdk-github-oidc"
+import { Metric } from "aws-cdk-lib/aws-cloudwatch"
 
 const vtlRequestMappingTemplatePaths = glob.sync("lib/**/*.req.vtl")
 
@@ -107,7 +108,14 @@ export class ApiStack extends Stack {
       })
     }
 
-    if (main) this.createStreamListener()
+    if (main) {
+      this.createStreamListener()
+
+      // create custom metrics
+      /* const bpsMetric = new Metric(this, "BeetsPerSecondMetric", { */
+      /*   namespace */
+      /* }) */
+    }
 
     let provider: IGithubActionsIdentityProvider | undefined = undefined
     if (prod && main) {
@@ -160,7 +168,7 @@ export class ApiStack extends Stack {
   createStreamListener() {
     const streamListener = new NodejsFunction(this, "StreamListener", {
       description: "DynamoDB stream listener",
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_14_X,
       architecture: Architecture.ARM_64,
       entry: "lib/functions/stream-listener.ts",
       memorySize: 256,
@@ -169,7 +177,7 @@ export class ApiStack extends Stack {
       bundling: {
         format: OutputFormat.ESM,
         tsconfig: "lib/functions/tsconfig.json",
-        /* target: "node14.8", */
+        target: "node14.8",
         nodeModules: [
           "@aws-sdk/client-secrets-manager",
           "@aws-sdk/client-dynamodb",
@@ -398,7 +406,7 @@ export class ApiStack extends Stack {
 
     /* const publishFunction = new NodejsFunction(this, "PublishFunction", { */
     /*   description: "Publishes a site version.", */
-    /*   runtime: Runtime.NODEJS_16_X, */
+    /*   runtime: Runtime.NODEJS_14_X, */
     /*   architecture: Architecture.ARM_64, */
     /*   timeout: Duration.minutes(1), */
     /*   memorySize: 512, */
@@ -407,7 +415,7 @@ export class ApiStack extends Stack {
     /*   bundling: { */
     /*     format: OutputFormat.ESM, */
     /*     tsconfig: "lib/functions/tsconfig.json", */
-    /*     /* target: "node14.8", */
+    /* target: "node14.8",
     /*     nodeModules: [ */
     /*       "@aws-sdk/client-dynamodb", */
     /*       "@aws-sdk/lib-dynamodb", */
@@ -487,7 +495,7 @@ export class ApiStack extends Stack {
         options: {
           requestParameters: {
             "integration.request.header.Authorization":
-              "method.request.header.Cookie",
+              "method.request.header.Authorization",
           },
           integrationResponses: [
             {
@@ -512,7 +520,7 @@ export class ApiStack extends Stack {
       }),
       {
         requestParameters: {
-          "method.request.header.Cookie": false,
+          "method.request.header.Authorization": false,
         },
         methodResponses: [
           {

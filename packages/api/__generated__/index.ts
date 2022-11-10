@@ -71,7 +71,7 @@ export type IProfile = {
 
 export type Mutation = {
   __typename?: "Mutation"
-  beet: Beet
+  beet: Scalars["Boolean"]
   follow: Scalars["Boolean"]
   like: Scalars["Boolean"]
   rebeet: Rebeet

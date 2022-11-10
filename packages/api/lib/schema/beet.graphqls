@@ -53,7 +53,7 @@ type Query {
 }
 
 type Mutation {
-  beet(text: String!): Beet!
+  beet(text: String!): Boolean!
   like(beetId: ID!): Boolean!
   unlike(beetId: ID!): Boolean!
   rebeet(beetId: ID!): Rebeet!

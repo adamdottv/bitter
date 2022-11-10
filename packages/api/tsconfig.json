@@ -22,5 +22,5 @@
     "esModuleInterop": true,
     "moduleResolution": "Node"
   },
-  "exclude": ["node_modules", "cdk.out", "lib/functions/**"]
+  "exclude": ["node_modules", "cdk.out", "lib/functions/**", "scripts/**"]
 }

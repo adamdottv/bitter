@@ -1,0 +1,15 @@
+{
+  "version" : "2018-05-29",
+  "operation" : "Query",
+  "query" : {
+    "expression" : "handle = :handle",
+    "expressionValues" : {
+      ":handle" : $util.dynamodb.toDynamoDBJson($ctx.args.handle)
+    }
+  },
+  "index": "gsi1",
+  "limit" : 1,
+  "scanIndexForward" : false,
+  "consistentRead" : false,
+  "select" : "ALL_ATTRIBUTES"
+}

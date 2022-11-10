@@ -3,9 +3,9 @@ import {
   SecretsManagerClient,
 } from "@aws-sdk/client-secrets-manager"
 import { AppSyncAuthorizerEvent, AppSyncAuthorizerResult } from "aws-lambda"
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 
-type ResolverContext = {}
+type ResolverContext = JwtPayload & {}
 
 const secretsManager = new SecretsManagerClient({
   region: process.env.AWS_REGION,
@@ -32,10 +32,10 @@ export const handler = async (
   }
 
   try {
-    const decoded = jwt.verify(token, secret)
+    const resolverContext = jwt.verify(token, secret) as JwtPayload
     return {
       isAuthorized: true,
-      resolverContext: decoded,
+      resolverContext,
     }
   } catch (error) {
     console.error(error)

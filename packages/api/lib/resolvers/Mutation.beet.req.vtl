@@ -1,0 +1,47 @@
+#set($sub = $ctx.identity.resolverContext.sub)
+#set($text = $ctx.args.text)
+#set($profile = "PROFILE#$sub")
+#set($id = $util.autoUlid())
+#set($beet = "BEET#$id")
+
+{
+  "version": "2018-05-29",
+  "operation": "TransactWriteItems",
+  "transactItems": [
+    {
+      "table": "[[TABLE_NAME]]",
+      "operation": "PutItem",
+      "key": {
+        "pk": $util.dynamodb.toDynamoDBJson($beet),
+        "sk": $util.dynamodb.toDynamoDBJson($beet)
+      },
+      "attributeValues": {
+        "type": $util.dynamodb.toDynamoDBJson("BEET"),
+        "id": $util.dynamodb.toDynamoDBJson($id),
+        "text": $util.dynamodb.toDynamoDBJson($text),
+        "userId": $util.dynamodb.toDynamoDBJson($sub),
+        "createdAt": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
+        "replies": $util.dynamodb.toDynamoDBJson(0),
+        "likes": $util.dynamodb.toDynamoDBJson(0),
+        "rebeets": $util.dynamodb.toDynamoDBJson(0)
+      }
+    },
+    {
+      "table": "[[TABLE_NAME]]",
+      "operation": "UpdateItem",
+      "key": {
+        "pk": $util.dynamodb.toDynamoDBJson($profile),
+        "sk": $util.dynamodb.toDynamoDBJson($profile)
+      },
+      "update": {
+        "expression": "ADD beetsCount :one",
+        "expressionValues": {
+          ":one": $util.dynamodb.toDynamoDBJson(1)
+        }
+      },
+      "condition": {
+        "expression": "attribute_exists(pk)"
+      }
+    }
+  ]
+}
